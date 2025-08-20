@@ -1,4 +1,13 @@
-﻿using HabitTracker;
+﻿// TODO: 
+// build out the menu options
+// When recording a habit we need to accept shorthand dates e.g. today, yesterday, 01/01/2025 13:10
+// And convert these to a long to be stored in the db
+// After that
+// Work on the view all records menu
+
+using Database;
+using HabitTracker;
+using System.Net.Http.Json;
 
 const bool DELETE_DB_ON_CLOSE = true;
 const string DATABASE_NAME = "habitTracker.db";
@@ -28,29 +37,37 @@ else
 }
 
 // Start user loop
-    // Request username
-    // Exit application
-    // View habits
     // Record habit
+    // View habits
     // Delete habit
     // Update habit
     // Nuke everything
 
-// TODO: 
-    // build out the menu options
-    // Start with Record a habit
-
 while (true)
 {
     USERNAME = Menu.GetUsername(USERNAME);
+    var isFirstMenuLoad = true;
 
     var menuChoice = string.Empty;
-    while (string.IsNullOrEmpty(menuChoice))
+    while (menuChoice != "c")
     {
-        menuChoice = Menu.Main();
+        menuChoice = Menu.Main(USERNAME, isFirstMenuLoad);
+        isFirstMenuLoad = false;
+
+        Console.WriteLine($"Selected option");
+
+        switch(menuChoice)
+        {
+            case "r":
+                var habit = Menu.InsertHabit(USERNAME);
+                HabitsRepository.InsertHabit(DATABASE_NAME, habit);
+                break;
+            default:
+                break;
+        }
     }
 
-    Console.WriteLine($"Option chosen {menuChoice}");
+    Console.WriteLine($"Closing app");
 
     return;
 }

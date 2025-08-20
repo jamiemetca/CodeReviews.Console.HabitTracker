@@ -51,7 +51,6 @@ namespace Database
                 command.Parameters.AddWithValue("$timestamp", habit.Timestamp);
                 command.Parameters.AddWithValue("$username", habit.Username);
 
-                Console.WriteLine("Inserting habit...");
                 command.ExecuteNonQuery();
 
                 command.CommandText =
